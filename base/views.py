@@ -6,29 +6,22 @@ from django.db.models import Avg
 
 # Create your views here.
 
+
+
+
 def home(request):
-    movies = {}
-    if 'title' in request.GET:
-        title = request.GET['title']
-        url = 'https://api.themoviedb.org/3/movie/550?api_key=c76fb0e97e8122287cfe28d173567350' % title
-        response = requests.get(url)
-        movies = response.json()
-    return render(request, 'base/index.html', {'movies': movies})
+    query = request.GET.get("title")
+    allMovies = None
+    if query:
+        allMovies = Movie.objects.filter(name__icontains=query)
+    else:
+        allMovies = Movie.objects.all()  # select * from movie
 
+    context = {
+        "movies": allMovies,
+    }
 
-# def home(request):
-#     query = request.GET.get("title")
-#     allMovies = None
-#     if query:
-#         allMovies = Movie.objects.filter(name__icontains=query)
-#     else:
-#         allMovies = Movie.objects.all()  # select * from movie
-
-#     context = {
-#         "movies": allMovies,
-#     }
-
-#     return render(request, "base/index.html", context)
+    return render(request, "base/index.html", context)
 
 
 # detail page
