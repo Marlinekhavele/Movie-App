@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 # registration
 def register(request):
     if request.user.is_authenticated:
-        return redirect("main:home")
+        return redirect("base:home")
 
     # if they are not logged in
     else:
